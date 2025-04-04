@@ -11,9 +11,10 @@ A creative login page with a **moving login button** that avoids incorrect input
 - 🛠️ **Interactive UI with CSS Effects**
 
 ## 📸 Preview:
-![Preview Image](screenshot.png)
+![Preview Image](Screenshot.png)
 
 ## 🛠️ Tech Stack:
 - HTML, CSS, JavaScript
+## Open the page:https://chaitanyapimpare.github.io/Moving-Button-Login/
 
 
