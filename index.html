@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Video Background</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            color: rgb(41, 185, 238);
+            text-align: center;
+            background-color: rgba(15, 41, 52, 0.2);
+            background-color: linear-gradient( #212327);
+        }
+        .container {
+            margin-top: 100px;
+            padding: 30px;
+            display: inline-block;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+            position: relative;
+            width: 320px;
+            height: 280px;
+            overflow: hidden;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .btn {
+            padding: 6px 15px;
+            background: #3aafd9;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: 0.2s ease-in-out;
+        }
+        .btn:hover {
+            background: #6848ba;
+            
+        }
+        .message {
+            color: red;
+            font-size: 12px;
+            margin-bottom: 10px;
+            display: none;
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            width: 90%;
+            transform: translateX(-50%);
+        }
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #playButton {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background: #ff0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #playButton:hover {
+            background: #cc0000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Local Video Background -->
+    <div class="video-container">
+        <video id="bgVideo" loop playsinline>
+            <source src="back.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- Play Button to Enable Sound -->
+    <button id="playButton">Play with Sound</button>
+
+    <!-- Login Form -->
+    <div class="container">
+        <p class="message" id="errorMessage">Please fill both input fields before proceeding.</p>
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button class="btn" id="loginBtn">Login</button>
+    </div>
+
+    <script>
+        const video = document.getElementById("bgVideo");
+        const playButton = document.getElementById("playButton");
+        const loginBtn = document.getElementById("loginBtn");
+        const username = document.getElementById("username");
+        const password = document.getElementById("password");
+        const errorMessage = document.getElementById("errorMessage");
+        const container = document.querySelector(".container");
+
+        // Function to move button when inputs are empty
+        function moveButton() {
+            
+            let x = Math.floor(Math.random() * 160) - 80;
+            let y = Math.floor(Math.random() * 120) - 100;
+            loginBtn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // Play video with sound when the button is clicked
+        playButton.addEventListener("click", function() {
+            video.muted = false;
+            video.play();
+            playButton.style.display = "none";
+        });
+
+        // Try autoplay without sound on page load
+        window.onload = () => {
+            video.muted = true;
+            video.play().catch(() => {
+        console.log("Autoplay failed, waiting for user interaction.");
+    });
+
+            // Restart video if coming from a successful login
+            if (sessionStorage.getItem("loginSuccess")) {
+                sessionStorage.removeItem("loginSuccess");
+            
+        document.body.addEventListener("click", function enableSound() {
+            video.muted = false;
+            video.play();
+            document.body.removeEventListener("click", enableSound);
+        });
+    }
+};
+
+
+        // Handle login validation
+        loginBtn.addEventListener("mouseover", function () {
+            if (username.value === "" || password.value === "") {
+                errorMessage.style.display = "block";
+                moveButton();
+            }
+        });
+
+        loginBtn.addEventListener("click", function (event) {
+            if (username.value === "" || password.value === "") {
+                event.preventDefault();
+                errorMessage.style.display = "block";
+                moveButton();
+            } else {
+                errorMessage.style.display = "none"; 
+                sessionStorage.setItem("loginSuccess", true);
+                alert("Login successful!");
+                location.reload();
+            }
+        });
+
+    </script>
+
+</body>
+</html>
